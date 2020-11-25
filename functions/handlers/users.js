@@ -1,12 +1,11 @@
+const { admin, db } = require("../util/admin");
 
-const {per} =require('../Util/admin')
-const {
-    validateSignUpData,
-    validateLoginData,
-    reduceUserDetail,
-  } = require("../util/validator");
+const config = require("../util/config");
 
-  const db = per.firestore();
+const firebase = require("firebase");
+firebase.initializeApp(config);
+
+
 exports.signUp = (req, res) => {
     const newUser = {
       email: req.body.email,
@@ -24,7 +23,7 @@ exports.signUp = (req, res) => {
         if (doc.exists) {
           return res.status(400).json({ name: "this name is already taken" });
         } else {
-          return per
+          return firebase
             .auth()
             .createUserWithEmailAndPassword(newUser.email, newUser.password);
         }
